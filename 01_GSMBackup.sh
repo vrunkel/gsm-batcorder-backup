@@ -46,6 +46,14 @@ set -e
 # ****************************************************************
 DELETE_THRESHOLD=90
 
+# **** Mail enabled / Mail aktiviert ****
+# switch if mail is activated = 1, else 0
+# * * *
+# Schalter ob Mail aktiv = 1, sonst 0
+# ****************************************************************
+ACTIVATE_MAIL=1
+
+
 # **** Mail to / Mail an ****
 # the mail adress reports will get sent to if mail is configured 
 # and internet available
@@ -131,9 +139,9 @@ if [[ "$backupUsedSpace" -gt 90 ]]; then
 fi
 
 ########################
-# Test if Batcorder volume is at least 90% full
-# if it is, the mlabel command initiates delete of card
-# else we do a normal rsync
+# Test if Batcorder volume is at least full to threshold
+# if it is, the mlabel command initiates delete of card 
+# upon next GSM-bc start else we do a normal rsync
 #
 
 myUsedSpace=$(df -k /var/run/usbmount/GSM_BC/ | tail -1 | awk '{sub (/%/, "", $5); print $5;}')
@@ -146,7 +154,7 @@ if [[ "$myUsedSpace" -gt "$DELETE_THRESHOLD" ]]; then
 	else 
 		echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" > /home/pi/GSM-Logging.txt
 		echo "rsync -a /var/run/usbmount/GSM_BC/* /var/run/usbmount/BACKUP/GSM_Backups" | at now
-	echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
+		echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
 	fi
 else
 	echo "Normal Rsync, used on BACKUP $backupUsedSpace" >> /home/pi/GSM-Logging.txt
