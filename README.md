@@ -13,3 +13,5 @@ u.a. sind das die Pakete :
 - ssmtp
 - mtools
 - libmtp-runtime
+
+Das Skript 01_GSMBackup.sh muss ins Verzeichnis /etc/usbmount/mount.d kopiert werden und mit Rechten zum Ausführen versehen werden (rwxr_xr_x).
