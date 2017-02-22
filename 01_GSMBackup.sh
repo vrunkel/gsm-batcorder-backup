@@ -46,6 +46,13 @@ set -e
 # ****************************************************************
 DELETE_THRESHOLD=90
 
+# **** Mail active / Mail aktiv ****
+# 0 no emails are sent, 1 mail is active
+# * * *
+# Bei 0 werden keine Mails versendet, bei 1 schon
+# ****************************************************************
+MAIL_ACTIVE=0
+
 # **** Mail to / Mail an ****
 # the mail adress reports will get sent to if mail is configured 
 # and internet available
@@ -141,17 +148,23 @@ if [[ "$myUsedSpace" -gt "$DELETE_THRESHOLD" ]]; then
 	if [[ -n "$GSM_DEVICE" ]]; then
 		echo "Rsync and DELETEME relabeling, used on BACKUP $backupUsedSpace" >> /home/pi/GSM-Logging.txt
 	    echo "rsync -a /var/run/usbmount/GSM_BC/* /var/run/usbmount/BACKUP/GSM_Backups && umount $GSM_DEVICE && mlabel -i $GSM_DEVICE ::DELETEME" | at now
-	   	echo "Normal rsync started, sd card delete initiated, used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
+    	if [ "$MAIL_ACTIVE" -eq "1" ]; then
+		   	echo "Normal rsync started, sd card delete initiated, used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO;
+		fi
 
 	else 
 		echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" > /home/pi/GSM-Logging.txt
 		echo "rsync -a /var/run/usbmount/GSM_BC/* /var/run/usbmount/BACKUP/GSM_Backups" | at now
-	echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
+		if [ "$MAIL_ACTIVE" -eq "1" ]; then
+			echo "Normal Rsync, GSM device not available, no DELETEME relabeling! Used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
+		fi
 	fi
 else
 	echo "Normal Rsync, used on BACKUP $backupUsedSpace" >> /home/pi/GSM-Logging.txt
 	echo "rsync -a /var/run/usbmount/GSM_BC/* /var/run/usbmount/BACKUP/GSM_Backups" | at now
-	echo "Normal rsync started, used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO
+	if [ "$MAIL_ACTIVE" -eq "1" ]; then
+		echo "Normal rsync started, used on BACKUP $backupUsedSpace" | mail -s "$MAIL_ID: Raspi update" $MAIL_TO;
+	fi
 fi
 
 ######## MISSING #####
