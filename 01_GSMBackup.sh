@@ -124,6 +124,7 @@ fi
 # NEEDS TESTING -> what happens if no LOGFILE.TXT exists!?
 # what happens if no correct clock is running ?
 # running number just as a revision might be better
+mkdir -p /var/run/usbmount/BACKUP/GSM_Backups
 echo "Backing up logfile" >> /home/pi/GSM-Logging.txt
 current_timestamp=$(date +%Y%m%d-%H%M%S) 
 echo "zip /var/run/usbmount/BACKUP/GSM_Backups/LOGFILE-$current_timestamp /var/run/usbmount/BACKUP/GSM_Backups/LOGFILE.TXT" | at now
