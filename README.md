@@ -16,4 +16,4 @@ u.a. sind das die Pakete :
 
 Das Skript 01_GSMBackup.sh muss ins Verzeichnis /etc/usbmount/mount.d kopiert werden und mit Rechten zum Ausführen versehen werden (rwxr_xr_x).
 
-Das Skript setzt voraus, dass der GSM-batcorder die SD-Karte als GSM_BC benennt. Das Medium fürs Backup muss das Label BACKUP tragen.
+Das Skript setzt voraus, dass der GSM-batcorder die SD-Karte als GSM_BC benennt. Das Medium fürs Backup muss das Label BACKUP tragen und als FAT32 formatiert sein.
